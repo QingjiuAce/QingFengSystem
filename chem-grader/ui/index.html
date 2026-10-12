@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清风AI系统</title>
+<link rel="stylesheet" href="style.css?v=31">
+<link rel="stylesheet" href="chem.css?v=31">
+</head>
+<body>
+<div class="mica" aria-hidden="true"></div>
+<div class="mica-noise" aria-hidden="true"></div>
+
+<div class="title-bar acrylic">
+  <span class="title-text">清风AI系统</span>
+  <span class="chip chip-accent" id="appState" style="margin-left:auto;">就绪</span>
+</div>
+
+<div class="main-layout">
+  <!-- Sidebar -->
+  <div class="sidebar sidebar-acrylic">
+    <div class="nav-section">
+      <div class="nav-label">工作台</div>
+      <a class="nav-item active" data-page="grading">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h12v2H3z"/></svg>
+        <span>批改中心</span>
+      </a>
+      <a class="nav-item" data-page="results">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 9h3v10H5zm5.5-5h3v15h-3zM16 13h3v6h-3z"/></svg>
+        <span>成绩总览</span>
+      </a>
+      <a class="nav-item" data-page="review">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        <span>待复核</span>
+        <span class="nav-badge" id="navBadge" hidden></span>
+      </a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">系统</div>
+      <a class="nav-item" data-page="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.82 1.18V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10.6 3.09V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 2.82 1.18l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09A1.65 1.65 0 0 0 20.91 10.6H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>设置</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content acrylic-layer">
+    <!-- ===== 批改中心 ===== -->
+    <div class="page active" id="page-grading">
+      <div class="page-header">
+        <h1>批改中心</h1>
+        <span class="chip chip-accent">API 未配置</span>
+      </div>
+
+      <div class="step-card task-card">
+        <p class="task-welcome">欢迎使用清风AI系统</p>
+        <button class="btn btn-accent big-new-task" id="newTask">新建任务</button>
+      </div>
+
+      <div class="progress-panel" id="progressPanel" hidden>
+        <div class="progress-row">
+          <div class="progress-bar-track"><div class="progress-bar" id="progressBar"></div></div>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-meta">
+          <span>当前：<span id="curFile">—</span></span>
+          <span>已处理 <span id="doneCount">0</span>/<span id="totalCount">0</span> 份</span>
+          <span>预计剩余 <span id="eta">—</span></span>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>成绩结果</h2>
+        <button class="btn btn-accent" id="exportBtn" disabled>导出 Excel</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>学号</th><th>姓名</th><th>总分</th><th>选择题</th><th>填空题</th><th>方程式</th><th>状态</th></tr>
+          </thead>
+          <tbody id="resultBody">
+            <tr><td colspan="7" class="empty" style="border:none;">还没有批改结果</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== 录入 / 核对答案 ===== -->
+    <div class="page" id="page-answers">
+      <div class="page-header">
+        <h1>录入 / 核对答案</h1>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost" id="backToGrading">返回</button>
+          <button class="btn btn-accent" id="confirmAnswers">确认并保存</button>
+        </div>
+      </div>
+      <div class="answer-layout">
+        <div class="answer-preview">
+          <div class="preview-toolbar"><span>答案卷预览</span></div>
+          <div class="preview-body">
+            <div class="empty">尚未选择答案卷</div>
+          </div>
+        </div>
+        <div class="answer-form">
+          <div class="form-toolbar">
+            <div class="left">
+              <span id="answerSummary">尚未导入答案</span>
+              <button class="tiny-btn" id="ocrPrefill">重新 OCR 预填</button>
+              <button class="tiny-btn" id="importDoc">从 Word / Excel 导入</button>
+            </div>
+            <span id="needConfirm">0 题需确认</span>
+          </div>
+          <div class="import-notice" id="importNotice" hidden></div>
+          <div class="batch-bar">
+            <span class="batch-label">批量设分值</span>
+            <input type="number" id="batchScoreVal" step="0.01" min="0" placeholder="如 2">
+            <button class="tiny-btn" id="batchScoreEmpty">应用到空分值的题</button>
+            <button class="tiny-btn" id="batchScoreAll">应用到全部</button>
+          </div>
+          <div class="q-head"><div>题号</div><div>标准答案</div><div>分值</div><div>题型</div><div>状态</div></div>
+          <div class="q-list" id="qList"></div>
+          <div class="q-addbar">
+            <button class="btn btn-ghost" id="addQuestion">+ 新增题目</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 成绩总览 ===== -->
+    <div class="page" id="page-results">
+      <div class="page-header">
+        <h1>成绩总览</h1>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="section-header"><h2>题目正确率</h2></div>
+      <div class="topic-list" id="topicList"></div>
+    </div>
+
+    <!-- ===== 待复核 ===== -->
+    <div class="page" id="page-review">
+      <div class="page-header">
+        <h1>待复核</h1>
+        <span class="chip" id="reviewCount">0 项待处理</span>
+      </div>
+      <div class="section-header"><h2>识别存疑 · 需人工确认</h2></div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+
+    <!-- ===== 设置 ===== -->
+    <div class="page" id="page-settings">
+      <div class="page-header"><h1>设置</h1></div>
+      <div class="form-container" style="max-width:560px;margin:0;">
+        <h2>API 配置</h2>
+        <div class="key-row"><label>智谱 GLM-OCR Key</label><input type="password" id="keyZhipu" placeholder="粘贴 API Key"></div>
+        <div class="key-row"><label>Qwen-VL-OCR Key</label><input type="password" id="keyQwen" placeholder="粘贴 API Key（第二份 OCR，用于交叉验证）"></div>
+        <div class="key-row"><label>DeepSeek Key</label><input type="password" id="keyDeepseek" placeholder="粘贴 API Key"></div>
+        <p style="font-size:12px;color:var(--text-tertiary);margin:6px 0 12px;">Key 仅保存在本机配置文件（config.json），不会上传。</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button class="btn btn-accent" id="saveKeys">保存</button>
+          <button class="btn btn-ghost" id="testLlm">测试连接</button>
+        </div>
+        <div class="test-result" id="testResult" hidden></div>
+        <h2>外观</h2>
+        <div class="setting-item" style="margin-top:8px;">
+          <label for="theme-toggle">主题模式</label>
+          <div class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <label for="theme-toggle" class="theme-slider"></label>
+            <span id="theme-label">亮色模式</span>
+          </div>
+        </div>
+        <h2 style="margin-top:22px;">数据</h2>
+        <div class="key-row" style="margin-top:8px;"><label>数据目录</label><input type="text" id="dataDir" readonly></div>
+        <div class="key-row"><label>缓存目录</label><input type="text" id="cacheDir" readonly></div>
+        <div style="display:flex;align-items:center;gap:10px;margin:10px 0 4px;">
+          <button class="btn btn-ghost" id="clearCache">清除当前任务缓存</button>
+          <span style="font-size:12px;color:var(--text-tertiary);" id="cacheInfo">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dialog" id="newTaskDialog" aria-hidden="true">
+  <div class="dialog-mask" data-close></div>
+  <div class="dialog-box" role="dialog" aria-modal="true" aria-label="新建任务">
+    <div class="dialog-header"><h3>新建任务</h3></div>
+    <div class="dialog-body">
+      <label class="dialog-label" for="taskTitle">任务标题</label>
+      <input type="text" id="taskTitle" placeholder="例如：X班 X月作业">
+      <p class="dialog-err" id="taskErr"></p>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-accent" id="taskConfirm">确认</button>
+      <button class="btn btn-ghost" id="taskCancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<div class="dialog" id="answerDialog" aria-hidden="true">
+  <div class="dialog-mask" data-close></div>
+  <div class="dialog-box" role="dialog" aria-modal="true" aria-label="选择答案文件">
+    <div class="dialog-header"><h3>选择答案文件</h3></div>
+    <div class="dialog-body">
+      <button class="btn btn-accent" id="pickFiles">选择文件</button>
+      <input type="file" id="fileInput" multiple hidden accept=".doc,.docx,.pdf,.png,.jpg,.jpeg,.bmp,.webp,.tif,.tiff">
+      <input type="file" id="sheetDirInput" webkitdirectory multiple hidden>
+      <p class="dialog-hint">优先使用 Word / PDF；图片文件将自动使用 OCR 识别</p>
+      <ul class="file-list" id="fileList"></ul>
+      <p class="dialog-err" id="fileErr"></p>
+      <label class="chk-row"><input type="checkbox" id="forceReocr">
+        <span>忽略缓存，强制重新识别（测试用）</span></label>
+      <label class="chk-row"><input type="checkbox" id="preferNew">
+        <span>重复题号以「新导入的」为准（默认保留先导入的）</span></label>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-accent" id="fileConfirm">确认</button>
+      <button class="btn btn-ghost" id="fileCancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<div class="import-progress" id="importProgress">
+  <div class="import-progress-label" id="importProgressLabel">正在解析…</div>
+  <div class="import-progress-track"><div class="import-progress-bar" id="importProgressBar"></div></div>
+</div>
+
+<div class="build-tag" id="buildTag">Build 0.11.1</div>
+<div class="toast" id="toast"></div>
+<script src="app.js?v=31"></script>
+</body>
+</html>

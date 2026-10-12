@@ -1,0 +1,96 @@
+{
+  "created": 1791821384,
+  "data_info": {
+    "num_pages": 1,
+    "pages": [
+      {
+        "height": 696,
+        "width": 1206
+      }
+    ]
+  },
+  "id": "20261013000943df9fe39de32d4396",
+  "layout_details": [
+    [
+      {
+        "bbox_2d": [
+          0,
+          76,
+          595,
+          123
+        ],
+        "content": "## 16. （除特别说明外，每空2分，共15分）",
+        "height": 696,
+        "index": 0,
+        "label": "text",
+        "native_label": "paragraph_title",
+        "width": 1206
+      },
+      {
+        "bbox_2d": [
+          29,
+          130,
+          516,
+          315
+        ],
+        "content": "(1) $ \\frac{\\mathrm{第四周期} \\mathrm{I} \\mathrm{II} \\mathrm{B} \\mathrm{族}} { \\mathrm{将} \\mathrm{N i} \\mathrm{氧} \\mathrm{化}} $ （1分）",
+        "height": 696,
+        "index": 1,
+        "label": "text",
+        "native_label": "text",
+        "width": 1206
+      },
+      {
+        "bbox_2d": [
+          646,
+          123,
+          961,
+          225
+        ],
+        "content": "$$\nH ^ {+} [ \\times \\ddot {O}: \\ddot {O} \\times ] H ^ {-}\n$$",
+        "height": 696,
+        "index": 2,
+        "label": "formula",
+        "native_label": "inline_formula",
+        "width": 1206
+      },
+      {
+        "bbox_2d": [
+          565,
+          442,
+          915,
+          469
+        ],
+        "content": "$$\n\\mathrm {言 二 化 学 第 1 页 (共 2 页)}\n$$",
+        "height": 696,
+        "index": 3,
+        "label": "formula",
+        "native_label": "inline_formula",
+        "width": 1206
+      },
+      {
+        "bbox_2d": [
+          45,
+          537,
+          986,
+          692
+        ],
+        "content": "(3) $ \\frac { M g F_{2} \\, , C a F_{2}} { \\mathrm { 化 织 烧}} $ (4) $ \\frac { 1 } { 2 } C O_{2} \\uparrow + C O_{2} \\uparrow $",
+        "height": 696,
+        "index": 4,
+        "label": "text",
+        "native_label": "text",
+        "width": 1206
+      }
+    ]
+  ],
+  "layout_visualization": [],
+  "md_results": "## 16. （除特别说明外，每空2分，共15分）\n\n(1) $ \\frac{\\mathrm{第四周期} \\mathrm{I} \\mathrm{II} \\mathrm{B} \\mathrm{族}} { \\mathrm{将} \\mathrm{N i} \\mathrm{氧} \\mathrm{化}} $ （1分）\n\n$$\nH ^ {+} [ \\times \\ddot {O}: \\ddot {O} \\times ] H ^ {-}\n$$\n\n$$\n\\mathrm {言 二 化 学 第 1 页 (共 2 页)}\n$$\n\n(3) $ \\frac { M g F_{2} \\, , C a F_{2}} { \\mathrm { 化 织 烧}} $ (4) $ \\frac { 1 } { 2 } C O_{2} \\uparrow + C O_{2} \\uparrow $",
+  "model": "glm-ocr",
+  "request_id": "20261013000943df9fe39de32d4396",
+  "usage": {
+    "completion_tokens": 201,
+    "prompt_tokens": 499,
+    "total_tokens": 700
+  }
+}

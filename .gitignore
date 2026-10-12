@@ -1,0 +1,30 @@
+# ---- Rust / Tauri 编译产物（可达 GB 级，绝不提交）----
+/src-tauri/target/
+**/target/
+*.rlib
+*.rmeta
+
+# ---- 前端依赖 / 构建产物（本项目无打包器，预防将来引入）----
+node_modules/
+/dist/
+/build/
+*.tsbuildinfo
+
+# ---- 本地协作记忆（含项目内部分析，不入库）----
+.workbuddy/
+
+# ---- 编辑器 / IDE ----
+.vscode/
+.idea/
+*.swp
+*.user
+
+# ---- 系统 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 运行时产物 ----
+*.log
+*.tmp
+*.bak

@@ -1,0 +1,29 @@
+[package]
+name = "qingfeng-system"
+version = "0.11.1"
+description = "清风AI系统"
+edition = "2021"
+
+[lib]
+name = "qingfeng_system_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.32", features = ["bundled"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+base64 = "0.22"
+zip = "2"
+pdfium-render = "0.8"
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true
